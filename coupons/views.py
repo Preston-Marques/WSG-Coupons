@@ -24,10 +24,6 @@ class DetailView(generic.DetailView):
     def get_queryset(self):
         return Coupon.objects.filter(publish_date__lte=timezone.now())
 
-class ResultsView(generic.DetailView):
-    model = Coupon
-    template_name = 'coupons/results.html'
-
 def claim(request, coupon_id):
     coupon = get_object_or_404(Coupon, pk=coupon_id)
     if request.user.is_authenticated():
