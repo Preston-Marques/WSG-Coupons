@@ -2,7 +2,7 @@ from django import forms
 from .models import Coupon
  
 class CouponCreationForm(forms.ModelForm):
-   
+#coupon creation form   
     class Meta:
         model = Coupon
         fields = ("title","code","description","publish_date","expire_date","terms")
