@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block title %}Scratch Coupon{% endblock %}
+{% block content %}
+  <style type="text/css">
+    .scratch {
+  position: relative;
+  width: 300px; 
+  margin: 0 auto;
+  text-align: center;
+  color: #c42d2d;
+  border: 3px solid grey;
+  font-size: 40px;
+  font-weight: 700;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -o-user-select: none;
+}
+
+#canvas {
+  position: absolute;
+  left: -3px;
+  top: -3px;
+  background: transparent;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -o-user-select: none;
+}
+</style>
+
+<div class="scratch">
+  <canvas id="canvas"></canvas>
+  <div>
+    <p>Thank You</p>
+    <p>Try Again</p>
+  </div>
+</div>
+
+<script type="text/javascript">
+window.onload=function(){
+  var canvas = document.getElementById("canvas");
+  var context = canvas.getContext("2d");
+  var w = canvas.parentNode.offsetWidth;
+  var h = canvas.parentNode.offsetHeight;
+  canvas.width = w;
+  canvas.height = h;
+  /*scratchThat*/
+  context.fillStyle = "#eee";
+  context.fillRect(0, 0, w, h);
+
+  /*textOnScratch*/
+  context.fillStyle = "#828282";
+
+  function draw(txt){
+    context.font="25px tahoma";
+    var txtHeight=15;
+    var offset=5;
+    var wid=Math.ceil(context.measureText(txt).width);
+    var txt=new Array(w*2).join(txt+' ');
+    for(var i=0;i<Math.ceil(canvas.height/txtHeight);i++){
+      context.fillText(txt,-(i*offset),i*txtHeight);
+    }
+  }
+  draw('WSG');
+
+  context.globalCompositeOperation = "destination-out";
+  var offsetX = canvas.parentNode.offsetLeft;
+  var offsetY = canvas.parentNode.offsetTop;
+  var mousedown = false;
+
+  canvas.addEventListener("touchstart", function(e) {
+    e.preventDefault();
+    mousedown = true;
+  });
+
+  canvas.addEventListener("touchmove", function(e) {
+    e.preventDefault();
+
+    if (mousedown) {
+      if (e.changedTouches) {
+        e = e.changedTouches[e.changedTouches.length - 1];
+      }
+      var x = (e.pageX) - offsetX - 100 || 0;
+      var y = (e.pageY) - offsetY - 100 || 0;
+      context.beginPath()
+      context.arc(x, y, 10, 0, Math.PI * 2);
+      context.fill();
+    }
+  });
+
+  canvas.addEventListener("touchend", function(e) {
+    e.preventDefault();
+    mousedown = false;
+    var num = 0;
+    var datas = context.getImageData(50, 25, w - 110, h - 50);
+    for (var i = 0; i < datas.data.length; i++) {
+      if (datas.data[i] == 0) {
+        num++;
+      };
+    };
+  });
+
+  canvas.addEventListener("mousedown", function(e) {
+    e.preventDefault();
+    mousedown = true;
+  });
+
+  canvas.addEventListener("mousemove", function(e) {
+    e.preventDefault();
+
+    if (mousedown) {
+      if (e.changedTouches) {
+        e = e.changedTouches[e.changedTouches.length - 1];
+      }
+      var x = e.pageX - offsetX - 200 || 0;
+      var y = e.pageY - offsetY - 100 || 0;
+      context.beginPath()
+      context.arc(x, y, 15, 0, Math.PI * 2);
+      context.fill();
+    }
+  });
+
+  canvas.addEventListener("mouseup", function(e) {
+    e.preventDefault();
+    mousedown = false;
+    var num = 0;
+    var datas = context.getImageData(50, 25, w - 110, h - 50);
+    for (var i = 0; i < datas.data.length; i++) {
+      if (datas.data[i] == 0) {
+        num++;
+      };
+    };
+  });
+
+}
+</script>
+{% endblock %}
