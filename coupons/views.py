@@ -21,8 +21,10 @@ class IndexView(generic.ListView):
 class DetailView(generic.DetailView):
     model = Coupon
     template_name = 'coupons/detail.html'
-    def get_queryset(self):
-        return Coupon.objects.filter(publish_date__lte=timezone.now())
+    def get_context_data(self, **kwargs):
+        context = super(DetailView, self).get_context_data(**kwargs)
+        context['claim_list'] = Claim.objects.filter(coupon=context['coupon'])
+        return context
 
 class ResultView(generic.DetailView):
     model = Coupon

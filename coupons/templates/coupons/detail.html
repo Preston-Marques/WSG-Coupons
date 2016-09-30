@@ -26,12 +26,12 @@
     <th>Email ID</th>
     <th>Claimed Date</th>
     </tr>
-{% for user in coupon.claimants.all %}
+{% for claim in claim_list.all %}
     <tr>
-    <td>{{ user.first_name }} {{ user.last_name }}</td>
-    <td>{{ user.phone_number }}</td>
-    <td>{{ user.email }}</td>
-    <td>{{ user.date_claimed }}</td>
+    <td>{{ claim.user.first_name }} {{ claim.user.last_name }}</td>
+    <td>{{ claim.user.phone_number }}</td>
+    <td>{{ claim.user.email }}</td>
+    <td>{{ claim.date_claimed }}</td>
     </tr>
 {% endfor %}
 </table>
